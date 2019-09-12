@@ -23,12 +23,14 @@ this.A=A;
 this.C=C;
 }	
 	public static void main(String[] args) throws IOException {
-		ArrayList <String> text = readString("G://UGA//2fall//8500Algorithms//Kmeans//Archaea.txt");
-		for (int i=0; i<text.size();i++) {
-		int length = text.get(i).split("\t").length;
+		ArrayList<String> text = readString("/Volumes/Research_Data/UGA/2Fall/8500Algorithms/Kmeans_folder/Archaea.txt");
+		CreateMatrix txt = new CreateMatrix();
+		//for (int i=0; i<text.size();i++) {
+		//int length = text.get(i).split("\t").length;
 		//split("\t")[20]);
 		}
 		
+		// use arraylist to read the file or use matrix to read the file and split by "\t"
 		// A	R	N	D	C	Q	E	G	H	I	L	K	M	F	P	S	T	W	Y	V
 		// input K, sets of points X1 ~ Xn, and place centroids at random locations. Repeat until converge
 		// For each point xi: find the nearest centroid and assign the point xi to the cluster j
@@ -38,15 +40,17 @@ this.C=C;
 		// kmeans minimize the within cluster variance, and variance is the sum of the Euclidean distance
 	
 
-	}
+	
 	// steps
 	// 1.select random k points
 	// 2.compute the distance between every point on the set  and those center and store the information
 	// 3.assign each point to the nearest cluster center, we get min distance calculated from each point and we add that point to specific partition set
 	// 4.update the cluster centroid point use mean
-	// 5.if the center change, repeat from 2, if not, then stop. 
+	// 5.if the center change, repeat from 2, if not, then stop.
+	// use while loop until the centroid point didn't change and use split("\t") to iterate each value
 	
 	//function
+	// normalization ( mean and std)
 	// find the minimal 
 	// find the distance ((X1-X2)^2 + (Y1-Y2)^2)^1/2
 	// mean
