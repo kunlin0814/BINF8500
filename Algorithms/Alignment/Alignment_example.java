@@ -4,10 +4,14 @@ import java.lang.*;
 public class Alignment_example {  
 
 public static void main(String[] args) throws IOException { 	
- // switch can improve speed
-	// string builder may be faster
-	//.append may also improve speed
-	// need to find the first element that is not empty or - for both
+	
+
+	// The attachment is the script for the sequence alignment.
+	//This script takes args[0] as our first sequence and args[1] as our second sequence that is fasta format, and the arg[2] is the file name you want to put on your output file.
+	// The output file contains the length of the first sequence and the second sequence and the best score of this alignment and the alignment result.
+	// The upper line is the first sequence, and the lower line is the second sequence
+	// If there is a mismatch or a gap, it will show * sign.
+
 	
 	String gene1 = ""; 
 	int misMatchPenalty = 0; 
