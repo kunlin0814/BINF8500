@@ -2,12 +2,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.Math;
 import java.util.*;
 import java.lang.*;
 public class find_motif {
 	
 	public static void main (String[] args) throws IOException { 	
+		long strat_time =System.currentTimeMillis();
 		double A_number  ;
 		double C_number  ;
 		double G_number  ;
@@ -22,7 +22,7 @@ public class find_motif {
 	//- For each motif occurrence, list position (start-end), actual sequence, and score.
 	ArrayList <String> text = readString("G:\\UGA\\2fall\\8500Algorithms\\sigma54.fasta");
 	int motif_size = text.get(1).length();
-	double cut_off = 2;
+	double cut_off = 21;
 	String freqMatrix [][]= new String [(text.get(1).length())+1][6];
 	double PSSMMatrix [][]= new double [(text.get(1).length())+1][6];
 	String strPSSMMatrix [][]= new String [(text.get(1).length())+1][6];
@@ -36,7 +36,8 @@ public class find_motif {
 	double Genome_other =0 ;
 	
 	ArrayList <String> sequence = readString("G:\\UGA\\2fall\\8500Algorithms\\Scel-So0157-2.fasta");
-	StringBuffer gene = new StringBuffer(""); 
+	
+	StringBuilder gene = new StringBuilder(""); 
 	
 	for (int i=1; i< sequence.size();i++) {
 		for (int j= 0 ; j < sequence.get(i).length(); j++) {
@@ -58,7 +59,8 @@ public class find_motif {
 			}
 			gene.append(nucleotide); }
 	}
-	long gene_length = gene.length();
+	int gene_length = gene.length();
+	char gene_array[] = new char [gene_length];
 	double GC = (Genome_C_number+Genome_G_number)/gene_length ;
 // fill up the four matrices
 	freqMatrix[0][0] = "Pos";
@@ -128,22 +130,22 @@ public class find_motif {
 		rvsfreqMatrix[motif_size-i][5] = String.valueOf(other+0.25);
 		
 		PSSMMatrix[i+1][0] = i+1 ;
-		PSSMMatrix[i+1][1] = log2((A_number+0.25)/(G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25))-log2((1-GC/2));
-		PSSMMatrix[i+1][2] = log2((G_number+0.25)/(G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25))-log2(GC/2);
-		PSSMMatrix[i+1][3] = log2((T_number+0.25)/(G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25))-log2((1-GC/2));
-		PSSMMatrix[i+1][4] = log2((C_number+0.25)/(G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25))-log2((GC/2));
-		PSSMMatrix[i+1][5] = log2((other+0.25)/(G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25))-log2((1-GC/2));;
+		PSSMMatrix[i+1][1] = log2((A_number+0.25)/((G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25)*((1-GC)/2)));
+		PSSMMatrix[i+1][2] = log2((G_number+0.25)/((G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25)*(GC/2)));
+		PSSMMatrix[i+1][3] = log2((T_number+0.25)/((G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25)*(((1-GC)/2))));
+		PSSMMatrix[i+1][4] = log2((C_number+0.25)/((G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25)*((GC/2))));
+		PSSMMatrix[i+1][5] = log2((other+0.25)/((G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25)*((1-GC)/2)));;
 	
 		rvsPSSMMatrix[i+1][0] = i+1 ;
 		// T's reverse
-		rvsPSSMMatrix[motif_size-i][1] = log2((A_number+0.25)/(G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25))-log2((1-GC/2));
+		rvsPSSMMatrix[motif_size-i][1] = log2((T_number+0.25)/((G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25)*(((1-GC)/2))));
 		// C's reverse
-		rvsPSSMMatrix[motif_size-i][2] = log2((G_number+0.25)/(G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25))-log2((GC/2)); 
+		rvsPSSMMatrix[motif_size-i][2] = log2((C_number+0.25)/((G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25)*((GC/2)))); 
 		// A's reverse
-		rvsPSSMMatrix[motif_size-i][3] = log2((T_number+0.25)/(G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25))-log2((1-GC/2));
+		rvsPSSMMatrix[motif_size-i][3] = log2((A_number+0.25)/((G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25)*(((1-GC)/2))));
 		// G's reverse
-		rvsPSSMMatrix[motif_size-i][4] = log2((C_number+0.25)/(G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25))-log2((GC/2));
-		rvsPSSMMatrix[motif_size-i][5] = log2((other+0.25)/(G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25))-log2((1-GC/2));;
+		rvsPSSMMatrix[motif_size-i][4] = log2((G_number+0.25)/((G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25)*((GC/2))));
+		rvsPSSMMatrix[motif_size-i][5] = log2((other+0.25)/((G_number+0.25+A_number+0.25+T_number+0.25+C_number+0.25)*(((1-GC)/2))));
 
 	
 	}
@@ -160,6 +162,7 @@ public class find_motif {
 	printMatrix(strPSSMMatrix);
 	//printMatrix(rvsPSSMMatrix);
 	System.out.println("cut off score is "+ cut_off);
+	
 		for (int i=0; i < gene_length-motif_size; i++) {
 			double sum = 0 ;
 			double rvssum = 0; 
@@ -187,31 +190,48 @@ public class find_motif {
 			}
 			
 			if (sum >= cut_off) {
-				System.out.println("Motif presented in original strand");
+				System.out.print("+ strand \t");
 				System.out.print("5' ");
 				for (int k=i; k< i+motif_size; k++) {
 					
 					System.out.print(gene.charAt(k));
 					
 				}
-				System.out.print(" 3'");
-				System.out.println();
-				System.out.println("original strand scores "+ sum);
+				System.out.print(" 3'\t");
 				
+				System.out.print("scores "+ sum);
+				System.out.println();
 			
 		}
 			if ( rvssum >=cut_off) {
-				System.out.println("Motif presented in complementary strands");
+				System.out.print("- strand \t");
 				System.out.print("3' ");
 				for (int k=i; k< i+motif_size; k++) {
-					System.out.print(gene.charAt(k));
+					char seq = gene.charAt(k);
+					if (seq == 'A') {
+					System.out.print('T');	
+					}
+					if (seq == 'T') {
+					System.out.print('A');					
+										}
+					if (seq == 'G') {
+					System.out.print('C');
+					}
+					if (seq == 'C') {
+					System.out.print('G');
+					}
 				
 				}
-				System.out.print(" 5'");
+				System.out.print(" 5'\t");
+				System.out.print("scores "+ rvssum);
 				System.out.println();
-				System.out.println("complementary strands scores "+ rvssum);
+				
+				
+			
 		}	
 		}
+		long finish =System.currentTimeMillis();
+		System.out.println("The Whole Program Takes "+ (finish-strat_time )+ " milli seconds" );	
 	}
 
 	public static ArrayList <String> readString(String file) throws IOException{ 
@@ -249,3 +269,4 @@ public class find_motif {
 	}
 
 }
+
