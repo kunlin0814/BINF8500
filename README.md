@@ -1,3 +1,3 @@
 # Algorithm
 
-The Java scripts for the assignment of Algorithms class
+The Java scripts for the assignment of Algorithm class
