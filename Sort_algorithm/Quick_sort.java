@@ -19,7 +19,7 @@ import java.io.FileWriter;
  * Once we sort the Index_String, we can know where is the string after sorting.
  * this sort uses Lomuto’s partition method
  */ 
-public class Index_String { 
+public class Quick_sort { 
 
     int index;
 	String string;
